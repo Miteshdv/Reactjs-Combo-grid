@@ -5,7 +5,7 @@ import DataGridView from '../components/DataGridView.jsx';
 
 
 const mapStateToProps = (state) => {
-  state.gridData.items = state.gridData.items.concat(state.gridData.items).concat(state.gridData.items)
+  state.gridData.items = state.gridData.items;
   return {
     gridData: state.gridData.items
   }

@@ -15,7 +15,7 @@ class DataGridView extends React.Component{
 	      this.state = { 
 	      colors: [],   
 			agDataGridColumns:[
-				{headerName: "Reditt Createer", field: "author" ,width:200},
+				{headerName: "Reditt Creator", field: "author" ,width:200},
 				{headerName: "Created on", field: "created",width:200 , cellRenderer: function(params) {
 
 
@@ -42,9 +42,10 @@ class DataGridView extends React.Component{
 					return '<a href='+params.value+' target="_blank">'+params.value+'</a>'
 				}},
 				{
-					headerName: "Values", width:200 ,cellRenderer:function(params)
+					headerName: "Values", width:228,cellRenderer:function(params)
 					{
 						 var eParentElement = params.eParentOfValue ;
+						eParentElement.style.overflow = "visible";
 						 var comboStyle = {height:22, padding :2}
 						 var options = [
 										  {id:1,name:'red'},
@@ -53,8 +54,13 @@ class DataGridView extends React.Component{
 								      			  {id:4,name:'purple'}
 										]
 
+                        function comboSelected(view,value)
+                        {
+                           view.props.rowData.color = value['name'];
+                        }
+
 						ReactDOM.render(
-							<Combobox value = "green" valueField = 'id' textField = 'name' data ={options}/>, eParentElement);
+							<Combobox  value = {params.data.color} defaultValue = {''} valueField = 'id' textField = 'name' data ={options} onChange = {function(value){comboSelected(this,value)}} rowData = {params.data}/>, eParentElement);
 						params.addRenderedRowListener('renderedRowRemoved', function () {
 											            ReactDOM.unmountComponentAtNode(eParentElement);
 											        });
@@ -63,48 +69,37 @@ class DataGridView extends React.Component{
 					}
 
 				}
-
 			]
 	        }
-
      }
 
-     
 
      gridReady()
-     {	
-     	//debugger
-     	//this.reactDG.showLoading(true);
+     {
      	this.props.loadGridData()
      }
-
-	
 
 	render(){
 		return  (		
 					    <Container width ="100%" height ="100%">
 						    <div className="ag-fresh" style = {{"width":"100%","height":300}}>
 							    <AgGridReact
-							    	ref={(ref) => this.reactDG = ref} 	
-							    	suppressLoadingOverlay= {true}
+							    	ref={(ref) => this.reactDG = ref}
+							    	suppressLoadingOverlay= {false}
 							    	onGridReady = {this.gridReady.bind(this)}	
-							    	rowData = {this.props.gridData}					    	
-								    // column definitions and row data are immutable, the grid
-								    // will update when these lists change
+							    	rowData = {this.props.gridData}
 								    columnDefs={this.state.agDataGridColumns}
 								    rowHeight="38"								    
 								/>
 							</div>
 						</Container>
-					
 				    );
 	}
 }
 
 
 DataGridView.propTypes = {  
-  loadGridData: React.PropTypes.func,
-  gridData:React.PropTypes.Array
+  loadGridData: React.PropTypes.func
 }
 
 export default DataGridView

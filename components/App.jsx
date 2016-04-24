@@ -9,11 +9,20 @@ class App extends React.Component {
 
    
    render() {
+
+       var options = [
+           {id:1,name:'red'},
+           {id:2,name:'blue'},
+           {id:3,name:'green'},
+           {id:4,name:'purple'}
+       ]
       return (
 
-      	 <Box width ="52%" height ={300} column>
+      	 <Box width ="63.5%" height ={300} column>
 
-            <DataGridContainer height = {300}/>
+             <DataGridContainer height = {300}/>
+
+
 
       	
       	 </Box>
